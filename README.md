@@ -7,7 +7,7 @@ BBQCoin (BQC) is a decentralized cryptocurrency designed for fast and secure pee
 
 
 **Reinstating the original blockchain**:
-   - Reversed the chain back to block height `490,843` to address high circulation supply issues caused by minimal mining activity between 2013 and 2024.
+   - Reversed the chain back to block height `490,843` to address high circulation supply issues caused by minimal mining activity between 2012 and 2024.
    - Created block `490,845` with a special reward of `351,582 BQC` to reimburse miners who revived the chain during early 2024.
 
 # Specifications:
@@ -55,7 +55,6 @@ addnode=seed03.bbqcoin.link
 - https://bbqcoin.network
 - https://chainz.cryptoid.info/bqc
 - https://x.com/og_bbqcoin_2012
-- https://discord.gg/2csk2QKheG
 - https://discord.gg/sXFFEhNhM6
 
 ---
