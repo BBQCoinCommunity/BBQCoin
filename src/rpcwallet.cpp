@@ -1534,17 +1534,28 @@ Value validateaddress(const Array& params, bool fHelp)
         CTxDestination dest = address.Get();
         string currentAddress = address.ToString();
         ret.push_back(Pair("address", currentAddress));
+
         bool fMine = pwalletMain ? IsMine(*pwalletMain, dest) : false;
         ret.push_back(Pair("ismine", fMine));
+
         if (fMine) {
             Object detail = boost::apply_visitor(DescribeAddressVisitor(), dest);
             ret.insert(ret.end(), detail.begin(), detail.end());
+
+            // Extract and add the pubkey hash (RIPEMD-160(SHA-256(pubkey)))
+            CKeyID* keyID = boost::get<CKeyID>(&dest);
+            if (keyID) {
+                ret.push_back(Pair("pubkeyhash", HexStr(keyID->begin(), keyID->end())));
+            }
         }
+
         if (pwalletMain && pwalletMain->mapAddressBook.count(dest))
             ret.push_back(Pair("account", pwalletMain->mapAddressBook[dest]));
     }
+
     return ret;
 }
+
 
 Value lockunspent(const Array& params, bool fHelp)
 {
