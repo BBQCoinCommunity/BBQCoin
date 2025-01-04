@@ -1545,7 +1545,7 @@ Value validateaddress(const Array& params, bool fHelp)
             // Extract and add the pubkey hash (RIPEMD-160(SHA-256(pubkey)))
             CKeyID* keyID = boost::get<CKeyID>(&dest);
             if (keyID) {
-                ret.push_back(Pair("pubkeyhash", HexStr(keyID->begin(), keyID->end())));
+                ret.push_back(Pair("scriptPubKey", HexStr(keyID->begin(), keyID->end())));
             }
         }
 
