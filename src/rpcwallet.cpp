@@ -1542,7 +1542,15 @@ Value validateaddress(const Array& params, bool fHelp)
         CKeyID* keyID = boost::get<CKeyID>(&dest);
         if (keyID)
         {
-            // Manually convert CKeyID to byte vector
+            // Add pubkey if available
+            CPubKey vchPubKey;
+            if (pwalletMain && pwalletMain->GetPubKey(*keyID, vchPubKey))
+            {
+                ret.push_back(Pair("pubkey", HexStr(vchPubKey)));
+                ret.push_back(Pair("iscompressed", vchPubKey.IsCompressed()));
+            }
+
+            // Construct the full P2PKH scriptPubKey
             std::vector<unsigned char> keyIDBytes(keyID->begin(), keyID->end());
             CScript scriptPubKey = CScript() << OP_DUP << OP_HASH160 << keyIDBytes << OP_EQUALVERIFY << OP_CHECKSIG;
             ret.push_back(Pair("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end())));
@@ -1554,6 +1562,7 @@ Value validateaddress(const Array& params, bool fHelp)
 
     return ret;
 }
+
 
 
 Value lockunspent(const Array& params, bool fHelp)
