@@ -1537,16 +1537,15 @@ Value validateaddress(const Array& params, bool fHelp)
 
         bool fMine = pwalletMain ? IsMine(*pwalletMain, dest) : false;
         ret.push_back(Pair("ismine", fMine));
+        ret.push_back(Pair("isscript", boost::get<CScriptID>(&dest) != nullptr));
 
-        if (fMine) {
-            Object detail = boost::apply_visitor(DescribeAddressVisitor(), dest);
-            ret.insert(ret.end(), detail.begin(), detail.end());
-
-            // Extract and add the pubkey hash (RIPEMD-160(SHA-256(pubkey)))
-            CKeyID* keyID = boost::get<CKeyID>(&dest);
-            if (keyID) {
-                ret.push_back(Pair("scriptPubKey", HexStr(keyID->begin(), keyID->end())));
-            }
+        CKeyID* keyID = boost::get<CKeyID>(&dest);
+        if (keyID)
+        {
+            // Manually convert CKeyID to byte vector
+            std::vector<unsigned char> keyIDBytes(keyID->begin(), keyID->end());
+            CScript scriptPubKey = CScript() << OP_DUP << OP_HASH160 << keyIDBytes << OP_EQUALVERIFY << OP_CHECKSIG;
+            ret.push_back(Pair("scriptPubKey", HexStr(scriptPubKey.begin(), scriptPubKey.end())));
         }
 
         if (pwalletMain && pwalletMain->mapAddressBook.count(dest))
