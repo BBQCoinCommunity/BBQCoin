@@ -1,4 +1,4 @@
-<img width="600"  src="https://i.imgur.com/iVmaaAd.png">
+<img width="600"  src="https://i.imgur.com/wWLgcGO.jpeg">
 
 # **What is BBQCoin?**
 BBQCoin (BQC) is a decentralized cryptocurrency designed for fast and secure peer-to-peer transactions. Initially launched in 2012, BBQCoin has been revived and updated with new features to ensure long-term scalability and community-driven growth.
